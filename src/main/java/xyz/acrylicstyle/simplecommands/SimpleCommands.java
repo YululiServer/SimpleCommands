@@ -8,10 +8,13 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import util.CollectionList;
 import util.ICollectionList;
@@ -84,6 +87,36 @@ public class SimpleCommands extends JavaPlugin implements Listener {
                     e.getPlayer().teleport(Objects.requireNonNull(Bukkit.getWorld("world_the_end")).getSpawnLocation());
                 else if (e.getPlayer().getWorld().getEnvironment() == World.Environment.THE_END && e.getPlayer().getBedSpawnLocation() == null)
                     e.getPlayer().teleport(Objects.requireNonNull(Bukkit.getWorld("world")).getSpawnLocation());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPrepareAnvil(PrepareAnvilEvent e) {
+        ItemStack left = e.getInventory().getItem(0);
+        ItemStack right = e.getInventory().getItem(1);
+        ItemStack result = e.getResult();
+        if (left != null && right != null) {
+            if (left.getType() == Material.BOW) {
+                if (right.getType() == Material.ENCHANTED_BOOK) {
+                    EnchantmentStorageMeta meta = (EnchantmentStorageMeta) right.getItemMeta();
+                    assert meta != null;
+                    if (meta.hasStoredEnchant(Enchantment.MENDING)) {
+                        ItemStack result2 = result == null || result.getType() == Material.AIR ? left.clone() : result.clone();
+                        ItemMeta resultMeta = result2.getItemMeta();
+                        assert resultMeta != null;
+                        resultMeta.addEnchant(Enchantment.MENDING, 1, false);
+                        result2.setItemMeta(resultMeta);
+                        e.setResult(result2);
+                    } else if (meta.hasStoredEnchant(Enchantment.ARROW_INFINITE)) {
+                        ItemStack result2 = result == null || result.getType() == Material.AIR ? left.clone() : result.clone();
+                        ItemMeta resultMeta = result2.getItemMeta();
+                        assert resultMeta != null;
+                        resultMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, false);
+                        result2.setItemMeta(resultMeta);
+                        e.setResult(result2);
+                    }
+                }
             }
         }
     }
