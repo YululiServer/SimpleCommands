@@ -13,3 +13,4 @@ commands:
     permission: simplecommands.pingall
   teleportworld:
     aliases: ["tpworld", "tpw"]
+    permission: simplecommands.teleportworld
