@@ -18,9 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import util.CollectionList;
 import util.ICollectionList;
-import xyz.acrylicstyle.simplecommands.commands.Ping;
-import xyz.acrylicstyle.simplecommands.commands.PingAll;
-import xyz.acrylicstyle.simplecommands.commands.Suicide;
+import xyz.acrylicstyle.simplecommands.commands.*;
 import xyz.acrylicstyle.simplecommands.utils.Constants;
 import xyz.acrylicstyle.simplecommands.utils.Utils;
 
@@ -36,6 +34,7 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         if (!disabledCommands.contains("ping")) Objects.requireNonNull(Bukkit.getPluginCommand("ping")).setExecutor(new Ping());
         if (!disabledCommands.contains("pingall")) Objects.requireNonNull(Bukkit.getPluginCommand("pingall")).setExecutor(new PingAll());
         if (!disabledCommands.contains("suicide")) Objects.requireNonNull(Bukkit.getPluginCommand("suicide")).setExecutor(new Suicide());
+        if (!disabledCommands.contains("teleportworld")) Objects.requireNonNull(Bukkit.getPluginCommand("teleportworld")).setExecutor(new TeleportWorld());
         Bukkit.getPluginManager().registerEvents(this, this);
     }
 

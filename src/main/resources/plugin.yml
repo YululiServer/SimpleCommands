@@ -11,3 +11,5 @@ commands:
   pingall:
     description: "Shows everyone's ping"
     permission: simplecommands.pingall
+  teleportworld:
+    aliases: ["tpworld", "tpw"]
