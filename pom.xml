@@ -52,7 +52,6 @@
             <groupId>xyz.acrylicstyle</groupId>
             <artifactId>NMSAPI-1.15.2</artifactId>
             <version>0.0.35</version>
-            <scope>runtime</scope>
         </dependency>
     </dependencies>
 </project>
