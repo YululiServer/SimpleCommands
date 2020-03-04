@@ -15,11 +15,7 @@ public class Ping implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
-        try {
-            player.sendMessage(ChatColor.GREEN + "Ping: " + PingAll.getPing(player) + "ms");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        player.sendMessage(ChatColor.GREEN + "Ping: " + PingAll.getPing(player) + "ms");
         return true;
     }
 }
