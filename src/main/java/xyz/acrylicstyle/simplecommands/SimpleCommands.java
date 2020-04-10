@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +12,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -24,11 +22,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import util.CollectionList;
 import util.ICollectionList;
-import xyz.acrylicstyle.simplecommands.commands.*;
+import xyz.acrylicstyle.simplecommands.commands.Ping;
+import xyz.acrylicstyle.simplecommands.commands.PingAll;
+import xyz.acrylicstyle.simplecommands.commands.Suicide;
+import xyz.acrylicstyle.simplecommands.commands.TeleportWorld;
 import xyz.acrylicstyle.simplecommands.utils.Constants;
 import xyz.acrylicstyle.simplecommands.utils.Utils;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
@@ -136,15 +136,10 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         if (meta == null) return;
         if (!meta.hasDisplayName()) return;
         if (meta.getDisplayName().contains("Self-harm sword")) {
-            //e.setCancelled(true);
-            try {
-                Field field = EntityEvent.class.getDeclaredField("entity");
-                field.setAccessible(true);
-                field.set(e, damager);
-                // damager.damage(e.getFinalDamage());
-            } catch (ReflectiveOperationException ex) {
-                ex.printStackTrace();
-            }
+            e.setCancelled(true);
+            damager.setFireTicks(e.getEntity().getFireTicks());
+            damager.damage(e.getFinalDamage());
+            damager.setVelocity(e.getEntity().getVelocity().multiply(-1));
         }
     }
 }
