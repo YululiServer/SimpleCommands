@@ -28,6 +28,7 @@ import xyz.acrylicstyle.simplecommands.commands.*;
 import xyz.acrylicstyle.simplecommands.utils.Constants;
 import xyz.acrylicstyle.simplecommands.utils.Utils;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
@@ -137,7 +138,9 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         if (meta.getDisplayName().contains("Self-harm sword")) {
             //e.setCancelled(true);
             try {
-                EntityEvent.class.getDeclaredField("entity").set(e, damager);
+                Field field = EntityEvent.class.getDeclaredField("entity");
+                field.setAccessible(true);
+                field.set(e, damager);
                 // damager.damage(e.getFinalDamage());
             } catch (ReflectiveOperationException ex) {
                 ex.printStackTrace();
