@@ -5,12 +5,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -123,7 +126,7 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         if (e.getDamager().getType() != EntityType.PLAYER) return;
         Player damager = (Player) e.getDamager();
@@ -132,8 +135,13 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         if (meta == null) return;
         if (!meta.hasDisplayName()) return;
         if (meta.getDisplayName().contains("Self-harm sword")) {
-            e.setCancelled(true);
-            damager.damage(e.getFinalDamage());
+            //e.setCancelled(true);
+            try {
+                EntityEvent.class.getDeclaredField("entity").set(e, damager);
+                // damager.damage(e.getFinalDamage());
+            } catch (ReflectiveOperationException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
