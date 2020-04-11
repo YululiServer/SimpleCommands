@@ -131,6 +131,13 @@ public class SimpleCommands extends JavaPlugin implements Listener {
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         if (e.getDamager().getType() != EntityType.PLAYER) return;
         Player damager = (Player) e.getDamager();
+        if (damager.getName().equals("Self-attacking_person")) {
+            e.setCancelled(true);
+            damager.setFireTicks(e.getEntity().getFireTicks());
+            damager.damage(e.getFinalDamage()*2);
+            damager.setVelocity(e.getEntity().getVelocity().multiply(-1));
+            return;
+        }
         ItemStack item = damager.getInventory().getItemInMainHand();
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
