@@ -60,14 +60,8 @@
         </dependency>
         <dependency>
             <groupId>xyz.acrylicstyle</groupId>
-            <artifactId>tomeito_lib</artifactId>
-            <version>0.1.22</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>xyz.acrylicstyle</groupId>
             <artifactId>NMSAPI-1.15.2</artifactId>
-            <version>0.0.35</version>
+            <version>0.1.10</version>
         </dependency>
     </dependencies>
 </project>

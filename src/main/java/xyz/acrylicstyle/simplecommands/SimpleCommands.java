@@ -61,6 +61,7 @@ public class SimpleCommands extends JavaPlugin implements Listener {
             if (itemStack == null) return;
             e.setCancelled(true);
             e.getPlayer().sendMessage("プレイヤー に " + ChatColor.AQUA + "[" + Objects.requireNonNull(itemStack.getItemMeta()).getDisplayName() + "]" + ChatColor.RESET + ChatColor.WHITE + " を " + amount + " 個与えました");
+            assert selector != null;
             Utils.runPlayer(e.getPlayer(), selector, player -> {
                 ItemStack itemStack2 = itemStack.clone();
                 itemStack2.setAmount(finalAmount);
