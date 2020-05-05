@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import xyz.acrylicstyle.craftbukkit.CraftPlayer;
 import xyz.acrylicstyle.simplecommands.utils.Utils;
 
 public class PingAll implements CommandExecutor {
@@ -17,8 +16,7 @@ public class PingAll implements CommandExecutor {
     }
 
     static String getPing(Player player) {
-        CraftPlayer craftPlayer = new CraftPlayer(player);
-        int ping = craftPlayer.getHandle().getPing();
+        int ping = player.spigot().getPing();
         String message;
         if (ping <= 5) message = "" + ChatColor.LIGHT_PURPLE + ping;
         else if (ping <= 50) message = "" + ChatColor.GREEN + ping;
