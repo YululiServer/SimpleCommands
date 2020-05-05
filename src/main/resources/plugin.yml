@@ -6,8 +6,6 @@ commands:
   suicide:
     description: "Kills yourself. Why would you do that?"
     permission: simplecommands.suicide
-  ping:
-    description: "Shows your ping"
   pingall:
     description: "Shows everyone's ping"
     permission: simplecommands.pingall
