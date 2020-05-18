@@ -12,3 +12,6 @@ commands:
   teleportworld:
     aliases: ["tpworld", "tpw"]
     permission: simplecommands.teleportworld
+  textures:
+    description: ""
+    aliases: ["texture", "/texture", "resource", "resourcepack"]

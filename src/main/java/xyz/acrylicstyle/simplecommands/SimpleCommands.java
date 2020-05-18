@@ -21,12 +21,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 import xyz.acrylicstyle.simplecommands.commands.PingAll;
 import xyz.acrylicstyle.simplecommands.commands.Suicide;
 import xyz.acrylicstyle.simplecommands.commands.TeleportWorld;
+import xyz.acrylicstyle.simplecommands.commands.Texture;
 
 import java.util.List;
 import java.util.Objects;
 
 public class SimpleCommands extends JavaPlugin implements Listener {
+    public static SimpleCommands instance = null;
     private List<String> disabledCommands;
+
+    @Override
+    public void onLoad() {
+        instance = this;
+    }
 
     @Override
     public void onEnable() {
@@ -34,6 +41,7 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         if (!disabledCommands.contains("pingall")) Objects.requireNonNull(Bukkit.getPluginCommand("pingall")).setExecutor(new PingAll());
         if (!disabledCommands.contains("suicide")) Objects.requireNonNull(Bukkit.getPluginCommand("suicide")).setExecutor(new Suicide());
         if (!disabledCommands.contains("teleportworld")) Objects.requireNonNull(Bukkit.getPluginCommand("teleportworld")).setExecutor(new TeleportWorld());
+        Objects.requireNonNull(Bukkit.getPluginCommand("textures")).setExecutor(new Texture());
         Bukkit.getPluginManager().registerEvents(this, this);
     }
 
