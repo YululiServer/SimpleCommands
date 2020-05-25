@@ -13,6 +13,7 @@ public class Suicide implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
+        player.getWorld().strikeLightning(player.getLocation());
         player.setHealth(0.0D);
         player.sendMessage(ChatColor.GOLD + "You took your own life.");
         return true;
