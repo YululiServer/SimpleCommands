@@ -47,7 +47,7 @@ public class SimpleCommands extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if (e.getPlayer().isOp()) e.getPlayer().setPlayerListName(ChatColor.RED + e.getPlayer().getName());
+        if (e.getPlayer().isOp()) e.getPlayer().setPlayerListName(ChatColor.RED + "[★]" + ChatColor.WHITE + e.getPlayer().getName());
     }
 
     @EventHandler
