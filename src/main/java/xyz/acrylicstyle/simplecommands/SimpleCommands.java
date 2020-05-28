@@ -50,7 +50,7 @@ public class SimpleCommands extends JavaPlugin implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getWhoClicked().getGameMode() == GameMode.CREATIVE) return;
         if (e.getClickedInventory() == null) return;
-        if (e.getInventory().getType() == InventoryType.PLAYER && e.getClickedInventory().getType() == InventoryType.PLAYER) return;
+        if (e.getInventory().getType() == InventoryType.CRAFTING && e.getClickedInventory().getType() == InventoryType.PLAYER) return;
         if (e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR && !disabledCommands.contains("binding_curse")) {
             if (Objects.requireNonNull(e.getCurrentItem().getItemMeta()).hasEnchant(Enchantment.BINDING_CURSE)) e.setCancelled(true);
         }
