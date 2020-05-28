@@ -1,6 +1,7 @@
 package xyz.acrylicstyle.simplecommands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
@@ -11,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -18,10 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.acrylicstyle.simplecommands.commands.PingAll;
-import xyz.acrylicstyle.simplecommands.commands.Suicide;
-import xyz.acrylicstyle.simplecommands.commands.TeleportWorld;
-import xyz.acrylicstyle.simplecommands.commands.Texture;
+import xyz.acrylicstyle.simplecommands.commands.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,12 +40,22 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         if (!disabledCommands.contains("pingall")) Objects.requireNonNull(Bukkit.getPluginCommand("pingall")).setExecutor(new PingAll());
         if (!disabledCommands.contains("suicide")) Objects.requireNonNull(Bukkit.getPluginCommand("suicide")).setExecutor(new Suicide());
         if (!disabledCommands.contains("teleportworld")) Objects.requireNonNull(Bukkit.getPluginCommand("teleportworld")).setExecutor(new TeleportWorld());
+        Objects.requireNonNull(Bukkit.getPluginCommand("crash")).setExecutor(new Crash());
         Objects.requireNonNull(Bukkit.getPluginCommand("textures")).setExecutor(new Texture());
         Bukkit.getPluginManager().registerEvents(this, this);
     }
 
     @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (e.getWhoClicked().getGameMode() == GameMode.CREATIVE) return;
+        if (e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR && !disabledCommands.contains("binding_curse")) {
+            if (Objects.requireNonNull(e.getCurrentItem().getItemMeta()).hasEnchant(Enchantment.BINDING_CURSE)) e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
+        if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         ItemStack item = e.getItemInHand();
         if (item.getType() != Material.AIR && !disabledCommands.contains("binding_curse")) {
             if (Objects.requireNonNull(item.getItemMeta()).hasEnchant(Enchantment.BINDING_CURSE)) e.setCancelled(true);
@@ -55,6 +64,7 @@ public class SimpleCommands extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent e) {
+        if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         ItemStack item = e.getItemDrop().getItemStack();
         if (item.getType() != Material.AIR && !disabledCommands.contains("binding_curse")) {
             if (Objects.requireNonNull(item.getItemMeta()).hasEnchant(Enchantment.BINDING_CURSE)) e.setCancelled(true);
