@@ -1,9 +1,6 @@
 package xyz.acrylicstyle.simplecommands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -16,6 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -44,13 +42,25 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         Objects.requireNonNull(Bukkit.getPluginCommand("crash")).setExecutor(new Crash());
         Objects.requireNonNull(Bukkit.getPluginCommand("textures")).setExecutor(new Texture());
         Bukkit.getPluginManager().registerEvents(this, this);
+        for (Player p : Bukkit.getOnlinePlayers()) onPlayerJoin(new PlayerJoinEvent(p, null));
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        if (e.getPlayer().isOp()) e.getPlayer().setPlayerListName(ChatColor.RED + e.getPlayer().getName());
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getWhoClicked().getGameMode() == GameMode.CREATIVE) return;
         if (e.getClickedInventory() == null) return;
-        if (e.getInventory().getType() == InventoryType.CRAFTING && e.getClickedInventory().getType() == InventoryType.PLAYER) return;
+        if ((
+                e.getInventory().getType() == InventoryType.CRAFTING
+                || e.getInventory().getType() == InventoryType.ANVIL
+        ) && (
+                e.getClickedInventory().getType() == InventoryType.PLAYER
+                || e.getClickedInventory().getType() == InventoryType.ANVIL
+        )) return;
         if (e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR && !disabledCommands.contains("binding_curse")) {
             if (Objects.requireNonNull(e.getCurrentItem().getItemMeta()).hasEnchant(Enchantment.BINDING_CURSE)) e.setCancelled(true);
         }
