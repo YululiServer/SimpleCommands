@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -48,6 +49,8 @@ public class SimpleCommands extends JavaPlugin implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getWhoClicked().getGameMode() == GameMode.CREATIVE) return;
+        if (e.getClickedInventory() == null) return;
+        if (e.getInventory().getType() == InventoryType.PLAYER && e.getClickedInventory().getType() == InventoryType.PLAYER) return;
         if (e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR && !disabledCommands.contains("binding_curse")) {
             if (Objects.requireNonNull(e.getCurrentItem().getItemMeta()).hasEnchant(Enchantment.BINDING_CURSE)) e.setCancelled(true);
         }
