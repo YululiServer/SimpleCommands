@@ -54,6 +54,8 @@ public class SimpleCommands extends JavaPlugin implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getWhoClicked().getGameMode() == GameMode.CREATIVE) return;
         if (e.getClickedInventory() == null) return;
+        if (e.getInventory().getType() == InventoryType.CHEST && e.getClickedInventory().getType() == InventoryType.CHEST) return;
+        if (e.getInventory().getType() == InventoryType.SHULKER_BOX && e.getClickedInventory().getType() == InventoryType.SHULKER_BOX) return;
         if ((
                 e.getInventory().getType() == InventoryType.ENDER_CHEST
                         || e.getInventory().getType() == InventoryType.CRAFTING
