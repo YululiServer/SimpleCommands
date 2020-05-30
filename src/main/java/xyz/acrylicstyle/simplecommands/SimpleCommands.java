@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -39,10 +40,33 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         if (!disabledCommands.contains("pingall")) Objects.requireNonNull(Bukkit.getPluginCommand("pingall")).setExecutor(new PingAll());
         if (!disabledCommands.contains("suicide")) Objects.requireNonNull(Bukkit.getPluginCommand("suicide")).setExecutor(new Suicide());
         if (!disabledCommands.contains("teleportworld")) Objects.requireNonNull(Bukkit.getPluginCommand("teleportworld")).setExecutor(new TeleportWorld());
-        Objects.requireNonNull(Bukkit.getPluginCommand("crash")).setExecutor(new Crash());
+        Objects.requireNonNull(Bukkit.getPluginCommand("firstjoin")).setExecutor(new FirstJoin());
         Objects.requireNonNull(Bukkit.getPluginCommand("textures")).setExecutor(new Texture());
         Bukkit.getPluginManager().registerEvents(this, this);
         for (Player p : Bukkit.getOnlinePlayers()) onPlayerJoin(new PlayerJoinEvent(p, null));
+    }
+
+    @EventHandler
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent e) {
+        if (e.getPlayer().isOp()) return;
+        if (e.getMessage().startsWith("/pl")
+                || e.getMessage().startsWith("/plugins")
+                || e.getMessage().startsWith("/bukkit:pl")
+                || e.getMessage().startsWith("/bukkit:plugins")) {
+            e.setCancelled(true);
+            e.getPlayer().sendMessage("Plugins (11): "
+                    + ChatColor.GREEN + "Votifier" + ChatColor.WHITE + ", "
+                    + ChatColor.GREEN + "WorldEdit" + ChatColor.WHITE + ", "
+                    + ChatColor.GREEN + "AdvancedAchievement" + ChatColor.WHITE + ", "
+                    + ChatColor.GREEN + "AntiCheat" + ChatColor.WHITE + ", "
+                    + ChatColor.GREEN + "ItemLock" + ChatColor.WHITE + ", "
+                    + ChatColor.GREEN + "SimpleCommands" + ChatColor.WHITE + ", "
+                    + ChatColor.GREEN + "ConsentChecker" + ChatColor.WHITE + ", "
+                    + ChatColor.GREEN + "VoteListener" + ChatColor.WHITE + ", "
+                    + ChatColor.GREEN + "PluginManager" + ChatColor.WHITE + ", "
+                    + ChatColor.GREEN + "LunaChat" + ChatColor.WHITE + ", "
+                    + ChatColor.GREEN + "WorldGuard");
+        }
     }
 
     @EventHandler

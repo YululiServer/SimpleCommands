@@ -15,5 +15,5 @@ commands:
   textures:
     description: ""
     aliases: ["texture", "/texture", "resource", "resourcepack"]
-  crash:
-    description: ""
+  firstjoin:
+    permission: simplecommands.firstjoin
