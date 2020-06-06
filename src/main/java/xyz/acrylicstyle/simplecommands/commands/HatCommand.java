@@ -15,7 +15,11 @@ public class HatCommand extends PlayerCommandExecutor {
             return;
         }
         ItemStack helmet = player.getInventory().getHelmet();
-        if (helmet != null && helmet.getType() != Material.AIR) player.getInventory().setItemInMainHand(helmet);
+        if (helmet != null && helmet.getType() != Material.AIR) {
+            player.getInventory().setItemInMainHand(helmet);
+        } else {
+            player.getInventory().setItemInMainHand(null);
+        }
         player.getInventory().setHelmet(item);
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Enjoy your new hat!");
     }
