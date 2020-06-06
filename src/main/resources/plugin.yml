@@ -17,3 +17,5 @@ commands:
     aliases: ["texture", "/texture", "resource", "resourcepack"]
   firstjoin:
     permission: simplecommands.firstjoin
+  hat:
+    permission: simplecommands.hat

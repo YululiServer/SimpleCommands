@@ -25,6 +25,8 @@ public class FirstJoin implements CommandExecutor {
             return true;
         }
         sender.sendMessage(ChatColor.GREEN + args[0] + " joined for the first time at " + DateFormat.getInstance().format(new Date(Bukkit.getOfflinePlayer(uuid).getFirstPlayed())));
+        sender.sendMessage(ChatColor.GREEN + "Last login: " + DateFormat.getInstance().format(new Date(Bukkit.getOfflinePlayer(uuid).getLastLogin())));
+        sender.sendMessage(ChatColor.GREEN + "Last seen: " + DateFormat.getInstance().format(new Date(Bukkit.getOfflinePlayer(uuid).getLastSeen())));
         return true;
     }
 }

@@ -21,6 +21,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.acrylicstyle.simplecommands.commands.*;
+import xyz.acrylicstyle.tomeito_api.TomeitoAPI;
 
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +43,7 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         if (!disabledCommands.contains("teleportworld")) Objects.requireNonNull(Bukkit.getPluginCommand("teleportworld")).setExecutor(new TeleportWorld());
         Objects.requireNonNull(Bukkit.getPluginCommand("firstjoin")).setExecutor(new FirstJoin());
         Objects.requireNonNull(Bukkit.getPluginCommand("textures")).setExecutor(new Texture());
+        TomeitoAPI.registerCommand("hat", new HatCommand());
         Bukkit.getPluginManager().registerEvents(this, this);
         for (Player p : Bukkit.getOnlinePlayers()) onPlayerJoin(new PlayerJoinEvent(p, null));
     }
@@ -71,7 +73,14 @@ public class SimpleCommands extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if (e.getPlayer().isOp()) e.getPlayer().setPlayerListName(ChatColor.RED + "[★]" + ChatColor.WHITE + e.getPlayer().getName());
+        if (e.getPlayer().isOp()) {
+            e.getPlayer().setPlayerListName(ChatColor.RED + "[★]" + ChatColor.WHITE + e.getPlayer().getName());
+            return;
+        }
+        if (e.getPlayer().hasPermission("group.helper")) {
+            if (e.getPlayer().hasPermission("group.admin") || e.getPlayer().isOp()) return; // do it for only non-ops
+            e.getPlayer().setPlayerListName(ChatColor.DARK_GREEN + "[★]" + ChatColor.WHITE + e.getPlayer().getName());
+        }
     }
 
     @EventHandler
