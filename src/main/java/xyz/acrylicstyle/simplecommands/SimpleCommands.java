@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
@@ -46,6 +47,15 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         TomeitoAPI.registerCommand("hat", new HatCommand());
         Bukkit.getPluginManager().registerEvents(this, this);
         for (Player p : Bukkit.getOnlinePlayers()) onPlayerJoin(new PlayerJoinEvent(p, null));
+    }
+
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
+        if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+        if (e.getRightClicked().getType() == EntityType.ITEM_FRAME) {
+            if (hasBindingCurse(e.getPlayer().getInventory().getItemInMainHand())) e.setCancelled(true);
+            if (hasBindingCurse(e.getPlayer().getInventory().getItemInOffHand())) e.setCancelled(true);
+        }
     }
 
     @EventHandler
@@ -98,9 +108,14 @@ public class SimpleCommands extends JavaPlugin implements Listener {
                         || e.getClickedInventory().getType() == InventoryType.PLAYER
                         || e.getClickedInventory().getType() == InventoryType.ANVIL
         )) return;
-        if (e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR && !disabledCommands.contains("binding_curse")) {
-            if (Objects.requireNonNull(e.getCurrentItem().getItemMeta()).hasEnchant(Enchantment.BINDING_CURSE)) e.setCancelled(true);
+        if (hasBindingCurse(e.getCurrentItem())) e.setCancelled(true);
+    }
+
+    public boolean hasBindingCurse(ItemStack item) {
+        if (item != null && item.getType() != Material.AIR && !disabledCommands.contains("binding_curse")) {
+            return Objects.requireNonNull(item.getItemMeta()).hasEnchant(Enchantment.BINDING_CURSE);
         }
+        return false;
     }
 
     @EventHandler
