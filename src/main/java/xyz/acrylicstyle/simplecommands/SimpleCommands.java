@@ -45,6 +45,7 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         Objects.requireNonNull(Bukkit.getPluginCommand("firstjoin")).setExecutor(new FirstJoin());
         Objects.requireNonNull(Bukkit.getPluginCommand("textures")).setExecutor(new Texture());
         TomeitoAPI.registerCommand("hat", new HatCommand());
+        TomeitoAPI.registerCommand("pos", new PosCommand());
         Bukkit.getPluginManager().registerEvents(this, this);
         for (Player p : Bukkit.getOnlinePlayers()) onPlayerJoin(new PlayerJoinEvent(p, null));
     }

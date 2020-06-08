@@ -19,3 +19,5 @@ commands:
     permission: simplecommands.firstjoin
   hat:
     permission: simplecommands.hat
+  pos:
+    description: "Shows current pos"
