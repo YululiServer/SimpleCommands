@@ -22,7 +22,9 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.acrylicstyle.simplecommands.commands.*;
+import xyz.acrylicstyle.simplecommands.utils.Utils;
 import xyz.acrylicstyle.tomeito_api.TomeitoAPI;
+import xyz.acrylicstyle.tomeito_api.command.PlayerCommandExecutor;
 
 import java.util.List;
 import java.util.Objects;
@@ -46,6 +48,30 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         Objects.requireNonNull(Bukkit.getPluginCommand("textures")).setExecutor(new Texture());
         TomeitoAPI.registerCommand("hat", new HatCommand());
         TomeitoAPI.registerCommand("pos", new PosCommand());
+        TomeitoAPI.registerCommand("spawn", new SpawnCommand());
+        TomeitoAPI.registerCommand("demo", new PlayerCommandExecutor() {
+            @Override
+            public void onCommand(Player player, String[] args) {
+                Player p = Bukkit.getPlayerExact(args[0]);
+                if (p == null) {
+                    player.sendMessage(ChatColor.RED + "Invalid player");
+                    return;
+                }
+                Utils.sendPacket(p, Utils.getPacket(5, 0));
+            }
+        });
+        TomeitoAPI.registerCommand("tableflip", new PlayerCommandExecutor() {
+            @Override
+            public void onCommand(Player player, String[] args) {
+                player.chat("(╯°□°）╯︵ ┻━┻");
+            }
+        });
+        TomeitoAPI.registerCommand("unflip", new PlayerCommandExecutor() {
+            @Override
+            public void onCommand(Player player, String[] args) {
+                player.chat("┬─┬ ノ( ゜-゜ノ)");
+            }
+        });
         Bukkit.getPluginManager().registerEvents(this, this);
         for (Player p : Bukkit.getOnlinePlayers()) onPlayerJoin(new PlayerJoinEvent(p, null));
     }
