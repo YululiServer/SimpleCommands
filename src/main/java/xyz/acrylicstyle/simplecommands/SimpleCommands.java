@@ -2,6 +2,7 @@ package xyz.acrylicstyle.simplecommands;
 
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -21,8 +23,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import util.CollectionList;
 import xyz.acrylicstyle.simplecommands.commands.*;
-import xyz.acrylicstyle.simplecommands.utils.Utils;
 import xyz.acrylicstyle.tomeito_api.TomeitoAPI;
 import xyz.acrylicstyle.tomeito_api.command.PlayerCommandExecutor;
 
@@ -49,7 +51,7 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         TomeitoAPI.registerCommand("hat", new HatCommand());
         TomeitoAPI.registerCommand("pos", new PosCommand());
         TomeitoAPI.registerCommand("spawn", new SpawnCommand());
-        TomeitoAPI.registerCommand("demo", new PlayerCommandExecutor() {
+        TomeitoAPI.registerCommand("fuck", new PlayerCommandExecutor() {
             @Override
             public void onCommand(Player player, String[] args) {
                 Player p = Bukkit.getPlayerExact(args[0]);
@@ -57,19 +59,9 @@ public class SimpleCommands extends JavaPlugin implements Listener {
                     player.sendMessage(ChatColor.RED + "Invalid player");
                     return;
                 }
-                Utils.sendPacket(p, Utils.getPacket(5, 0));
-            }
-        });
-        TomeitoAPI.registerCommand("tableflip", new PlayerCommandExecutor() {
-            @Override
-            public void onCommand(Player player, String[] args) {
-                player.chat("(╯°□°）╯︵ ┻━┻");
-            }
-        });
-        TomeitoAPI.registerCommand("unflip", new PlayerCommandExecutor() {
-            @Override
-            public void onCommand(Player player, String[] args) {
-                player.chat("┬─┬ ノ( ゜-゜ノ)");
+                new CollectionList<>(player.getLocation().getNearbyEntities(1, 1, 1)).forEach(e -> {
+                    if (e instanceof Damageable) ((Damageable) e).damage(0.1, p);
+                });
             }
         });
         Bukkit.getPluginManager().registerEvents(this, this);
@@ -117,6 +109,9 @@ public class SimpleCommands extends JavaPlugin implements Listener {
         if (e.getPlayer().hasPermission("group.helper")) {
             if (e.getPlayer().hasPermission("group.admin") || e.getPlayer().isOp()) return; // do it for only non-ops
             e.getPlayer().setPlayerListName(ChatColor.DARK_GREEN + "[★]" + ChatColor.WHITE + e.getPlayer().getName());
+        } else if (e.getPlayer().hasPermission("group.moderator")) {
+            if (e.getPlayer().hasPermission("group.admin") || e.getPlayer().isOp()) return; // do it for only non-ops
+            e.getPlayer().setPlayerListName(ChatColor.DARK_GREEN + "[+]" + ChatColor.WHITE + e.getPlayer().getName());
         }
     }
 
@@ -225,6 +220,14 @@ public class SimpleCommands extends JavaPlugin implements Listener {
             damager.setFireTicks(e.getEntity().getFireTicks());
             damager.damage(e.getFinalDamage());
             damager.setVelocity(e.getEntity().getVelocity().multiply(-1));
+        }
+    }
+
+    @EventHandler
+    public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
+        if (e.getMessage().equals(":fire:")) {
+            e.setMessage(ChatColor.RED + "🔥");
+            e.getPlayer().setFireTicks(Integer.MAX_VALUE);
         }
     }
 }

@@ -29,6 +29,12 @@
                         </goals>
                         <configuration>
                             <minimizeJar>true</minimizeJar>
+                            <relocations>
+                                <relocation>
+                                    <pattern>util</pattern>
+                                    <shadedPattern>xyz.acrylicstyle.simplecommands.libs.util</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>

@@ -23,10 +23,5 @@ commands:
     description: "Shows current pos"
   spawn:
     description: ""
-  tableflip:
-    description: ""
-  unflip:
-    description: ""
-  demo:
-    description: ""
-    permission: "simplecommands.demo"
+  fuck:
+    permission: "simplecommands.fuck"
